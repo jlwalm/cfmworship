@@ -199,6 +199,7 @@ if($permissions>='2')
 {
 
 $result = mysql_query("select * from songs order by song_name asc");
+$result_first = mysql_query("select * from songs where idsongs < '0' order by song_name asc");
 
 //create form
 
@@ -209,9 +210,9 @@ Add Song:
 
 //loop through results and populate dropdown box
 
- while ($row = mysql_fetch_array($result))
+ while ($row = mysql_fetch_array($result_first))
  {
-  if($row['idsongs'] < '0')echo "<option value='" . $row['idsongs'] . "'>" . $row['song_name'] . "</option>";
+  echo "<option value='" . $row['idsongs'] . "'>" . $row['song_name'] . "</option>";
   }
 
 
