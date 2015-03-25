@@ -11,10 +11,6 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>CFM Worship | Song list</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
      <!-- Le styles -->
     <link href="css/bootstrap.css" rel="stylesheet">
 
@@ -206,7 +202,7 @@ $result_first = mysql_query("select * from songs where idsongs < '0' order by so
 echo "<table class='table table-striped table-bordered table-condensed table-hover' border='0'><tr><td><form method='GET' action='" . $php_self . "'>
 
 Add Song: 
-<select name='idsongs' id='idsongs'>"<optgroup>;
+<select name='idsongs' id='idsongs'><optgroup>";
 
 //loop through results and populate dropdown box
 
