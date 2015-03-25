@@ -201,7 +201,7 @@ $result_first = mysql_query("select * from songs where idsongs < '0' order by so
 
 echo "<table class='table table-striped table-bordered table-condensed table-hover' border='0'><tr><td><form method='GET' action='" . $php_self . "'>
 
-Add Song: 
+Add Item: 
 <select name='idsongs' id='idsongs'>";
 
 //loop through results and populate dropdown box
