@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Q2220229 - Pivot table</title>
+    <style>
+      td {
+        border-bottom: 1px solid grey;
+        width: 10em;
+      }
+    </style>
+  </head>
+
+  <body>
+<?php
+
+/*
+ * Some test data base on:
+ * Date     |Role      |Name
+   =============================
+   01/02/14 |Musician  |Bob
+   01/02/14 |Leader    |Jerry
+   01/02/14 |Singer    |Carol
+   08/02/14 |Musician  |Charles
+   08/02/14 |Leader    |Baz
+   08/02/14 |Singer    |Norman
+ *
+ */
+
+ /* sample output:
+  *
+  * Role     |01/02/14  |08/02/14
+    ===============================
+    Musician |Bob       |Charles
+    Leader   |Jerry     |Baz
+    Singer   |Carol     |Norman
+  */
+
+$db=mysqli_connect("localhost","root","John2031!","cfmworship");
+// Check connection
+if (mysqli_connect_errno())
+  {
+  echo "Failed to connect to MySQL: " . mysqli_connect_error();
+  }
+
+$query = mysqli_query($db,"select users.firstname, service.date, role.role_name from rota, users, service, role where users.id = rota.users_id
+and role.idrole = rota.role_idrole and service.am_pm = 'am' and service.idservice = rota.service_idservice and service.date >= now()-interval 1 month order by role.role_name, service.date LIMIT 0, 30");
+
+
+
+// i prefer to used named subscripts to make the code easier to read.
+define('THE_DATE', 'date');
+define('ROLE',     'role_name');
+define('MEMBER',   'firstname');
+
+/*
+ * Now, we need a complete array of Roles in the order that they are to be displayed.
+ *
+ * These names must match with the names of the roles in the input data.
+ * They will be printed out in the order that they appear in the array.
+ *
+ */
+$allRoles = array('Worship Leader', 'Keys', 'Guitar', 'Bass', 'Drums', 'Solo Instruments', 'Vox1', 'Vox2', 'Vox3', 'Speaker', 'Service Leader', 'Electric Guitar', 'Cello');
+
+
+/*
+ * At some point we will need an output array that we can easily traverse and
+ * print out as a row of dates. i.e. a page of data.
+ *
+ * We will build it up as we go along...
+ *
+ */
+$outputDates = array();
+
+/*
+ * Start to process the input array.
+ *
+ * To make my life easier, i will use the 'read ahead' technique to simplify the code.
+ */
+
+$currentRoleRow = mysqli_fetch_array($query);
+
+while (isset($currentRoleRow[THE_DATE])) { // process all the input array...
+
+  $currentDay = $currentRoleRow[THE_DATE];
+
+  // normalize 'one day' input...
+
+  // create an array to hold ALL the possible roles for this day...
+  $theDayRoles = array();
+
+  // initialise the array with default values for all the roles.
+  foreach ($allRoles as $role) {
+    $theDayRoles[$role] = '--';
+  }
+
+  // now we need to fill theDay roles with what we have for the current day...
+  while ($currentRoleRow[THE_DATE] == $currentDay) {
+
+    // set the appropiate DayRole to the current MEMBER
+    $theDayRoles[$currentRoleRow[ROLE]] = $currentRoleRow[MEMBER];
+
+    // read the next input row - may be new day or no more
+    $currentRoleRow = mysqli_fetch_array($query);
+  }
+
+  /* we now have:
+   *   Current Date
+   *
+   *   an array of members for ALL the roles on that day.
+   *
+   *   We need to outout it to another array where we can print it out
+   *   by scanning the array line by line.
+   *
+   *   Or we can build the output array so that we scan the whole length of it multiple times
+   *   to get the output by rows.
+   *
+   *   I will 'pivot' the array and produce an output array we can scan sequentially.
+   *
+   */
+
+   // to ensure that we are updating the currect row i will use a subscript
+   $currentOutputRow = 0;
+
+   // first add the current date to the output...
+   $outputDates[$currentOutputRow][] = $currentDay;
+   $currentOutputRow++; // next output row
+
+   // we need to drive off the '$allRoles' array to add the rows in the correct order
+   foreach ($allRoles as $outRole) {
+     $outputDates[$currentOutputRow][] = $theDayRoles[$outRole];
+     $currentOutputRow++; // next output row
+   }
+
+} // end of all the input data
+
+/*
+ * Now we just need to print the outputDate array one row at a time...
+ */
+
+// need the roles as the first column...
+// so we need an index for it
+$currentRoleIdx = -1; // increment each time but allow for the first row being the title
+
+echo '<table>';
+foreach ($outputDates as $oneOutputRow) {
+
+  echo '<tr>';
+
+  // this is the first column...
+  if ($currentRoleIdx < 0) {
+    echo '<td>'. 'Roles' .'</td>';
+  }
+  else {
+    echo '<td>'. $allRoles[$currentRoleIdx] .'</td>';
+  }
+
+  // now output the day info
+  foreach($oneOutputRow as $column) {
+    echo '<td>'. $column .'</td>';
+  }
+  echo '</tr>';
+  $currentRoleIdx++; // next output Role to show...
+
+}
+echo '</table>';
+
+?>
+</body>
+</html>

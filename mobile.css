@@ -1,0 +1,126 @@
+ /* mobile styles */
+@media handheld {
+
+    html, body {
+        font: 12px/15px sans-serif;
+        background: red;
+        padding: 3px;
+        color: #000;
+        margin: 0;
+        }
+    #sidebar, #footer {
+        display: none;
+        }
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: normal;
+        }
+    #content img { 
+        max-width: 250px;
+        }
+    .center {
+        width: 100% !important;
+        text-align: center;
+        }
+    a:link, a:visited {
+        text-decoration: underline;
+        color: #0000CC;
+        }
+    a:hover, a:active {
+        text-decoration: underline;
+        color: #660066;
+        }
+
+#navigation {
+ color: #333;
+ padding: 10px 0px 0px 0px;
+ margin: 0px 0px 0px 0px;
+ background: #99BCBF;
+ height:15px;
+ line-height:15px;
+ width:100%;
+ display:none;
+}
+
+
+
+
+
+#wrapper { 
+ margin: 0 auto 0 auto;
+ width: 100%;
+    border: 1px grey solid;
+    min-height:100%;
+}
+#faux {
+
+ margin-bottom: 0px;
+ width: 100%
+}
+#header {
+ color: #FFFFFF;
+ width: 100%;
+ padding: 0px;
+ height: 90px;
+ margin: 0px 0px 0px 0px;
+ padding-left:0px;
+ background: red;
+ font-size:24px;
+ font-weight:bold;
+line-height:90px;
+}
+
+#logo{padding-left:20px;}
+
+
+#navigation {
+ color: #333;
+ padding: 0px 0px 0px 0px;
+ margin: 0px 0px 0px 0px;
+ background: #99BCBF;
+ height:15px;
+ line-height:15px;
+ width:100%;
+}
+#rightcolumn { 
+ display: inline;
+ color: #333;
+ margin: 0%;
+ padding: 0%;
+ width: 100%;
+ float: none;
+}
+#leftcolumn { 
+ float: none;
+ color: #333;
+ margin: 0%;
+ padding: 0%;
+ width: 100%;
+ display: inline;
+ position: absolute;
+}
+#footer { 
+ width: 100%;
+ clear: both;
+ color: #333;
+ background: #ABBEBE;
+ margin: 0px 0px 0px 0px;
+ padding: 0px;
+}
+.clear { clear: both; background: none; }
+
+
+#setlist{padding:0%;}
+
+#service{padding:0%;}
+#songs{padding:0%;}
+
+
+}
+/* iPhone-specific styles */
+@media only screen and (max-device-width: 480px) { 
+
+    html {
+        -webkit-text-size-adjust: none;
+        }
+
+}
