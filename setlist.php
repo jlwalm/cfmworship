@@ -212,6 +212,8 @@ Add Song:
  while ($row = mysql_fetch_array($result))
  {
 
+
+  if($row['idsongs'] == '-1')echo "<option value='" . $row['idsongs'] . "'>" . $row['song_name'] . "</option>";
   echo "<option value='" . $row['idsongs'] . "'>" . $row['song_name'] . "</option>";
 
   }
