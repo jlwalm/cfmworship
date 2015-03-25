@@ -213,7 +213,7 @@ Add Song:
  {
 
 
-  if($row['idsongs'] == '-1')echo "<option value='" . $row['idsongs'] . "'>" . $row['song_name'] . "</option>";
+  if($row['idsongs'] < "0")echo "<option value='" . $row['idsongs'] . "'>" . $row['song_name'] . "</option>";
   echo "<option value='" . $row['idsongs'] . "'>" . $row['song_name'] . "</option>";
 
   }
